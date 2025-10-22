@@ -1,0 +1,32 @@
+name: Publish Packages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # ensures tags are fetched
+      - uses: oven-sh/setup-bun@v2
+      - name: Detect package from tag
+        id: detect
+        run: |
+          tag=${GITHUB_REF_NAME}
+          package=$(echo "$tag" | cut -d'@' -f1)
+          echo "package=$package" >> $GITHUB_OUTPUT
+          echo "Detected package: $package"
+
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      - name: Build and publish
+        run: |
+          cd packages/${{ steps.detect.outputs.package }}
+          bun run build
+          bun publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

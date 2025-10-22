@@ -1,0 +1,57 @@
+{
+  "name": "@atomic-variants/webpack-plugin",
+  "version": "0.1.0",
+  "description": "A Webpack plugin for atomic-variants that extracts classes.",
+  "keywords": [
+    "atomic-variants",
+    "tailwindcss",
+    "webpack",
+    "plugin",
+    "responsive",
+    "variants"
+  ],
+  "bugs": {
+    "url": "https://github.com/burakgormek/atomic-variants/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/burakgormek/atomic-variants"
+  },
+  "license": "MIT",
+  "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown src/index.ts",
+    "release": "bun publish",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@atomic-variants/constants": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/jest": "^30.0.0",
+    "tsdown": "^0.15.7",
+    "typescript": "^5",
+    "webpack": "^5.102.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

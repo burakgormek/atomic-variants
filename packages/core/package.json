@@ -1,0 +1,52 @@
+{
+  "name": "@atomic-variants/core",
+  "version": "0.1.0",
+  "description": "A utility for creating type-safe Tailwind CSS variants.",
+  "keywords": [
+    "tailwindcss",
+    "variants",
+    "responsive",
+    "type-safe"
+  ],
+  "bugs": {
+    "url": "https://github.com/burakgormek/atomic-variants/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/burakgormek/atomic-variants"
+  },
+  "license": "MIT",
+  "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown src/index.ts",
+    "release": "bun publish --dry-run",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/jest": "^30.0.0",
+    "tailwind-merge": "^3.3.1",
+    "tsdown": "^0.15.7",
+    "typescript": "^5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

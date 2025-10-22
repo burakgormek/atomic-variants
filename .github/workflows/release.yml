@@ -1,0 +1,81 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+name: release-please
+
+jobs:
+  release-please:
+    name: Release
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+      - name: Debug outputs
+        run: |
+          echo "releases_created = ${{ steps.release.outputs.releases_created }}"
+          echo "paths_released = ${{ steps.release.outputs.paths_released }}"
+
+  prepare-matrix:
+    name: Prepare Matrix
+    needs: release-please
+    runs-on: ubuntu-latest
+    if: needs.release-please.outputs.releases_created == 'true'
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Set dynamic matrix
+        id: set-matrix
+        run: |
+          paths="${{ needs.release-please.outputs.paths_released }}"
+          # Convert to JSON array of package names
+          packages=$(echo "$paths" | grep -oE 'packages/[^/]+' | sort -u | sed 's/packages\///g' | paste -sd ',' -)
+          echo "matrix=[${packages//,/\",\"}]" | sed 's/\[/["/; s/\]/"]/;' >> $GITHUB_OUTPUT
+
+  publish:
+    name: Publish
+    needs: [release-please, prepare-matrix]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - name: Check if this package was released
+        id: check_release
+        run: |
+          RELEASED_PATHS="${{ needs.release-please.outputs.paths_released }}"
+          echo "Released paths: $RELEASED_PATHS"
+
+          if echo "$RELEASED_PATHS" | grep -q "packages/${{ matrix.package }}"; then
+            echo "package_released=true" >> $GITHUB_OUTPUT
+          else
+            echo "package_released=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Install dependencies
+        if: steps.check_release.outputs.package_released == 'true'
+        run: bun install --frozen-lockfile
+      - name: Build package
+        if: steps.check_release.outputs.package_released == 'true'
+        run: bun --filter ./packages/${{ matrix.package }} build
+      - name: Publish package to npm
+        if: steps.check_release.outputs.package_released == 'true'
+        run: |
+          cd packages/${{ matrix.package }}
+          bun publish --access public
+        env:
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}

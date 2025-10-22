@@ -1,0 +1,24 @@
+[package]
+name = "swc_plugin_atomic_variants"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+lto = true
+
+[dependencies]
+indexmap = "2"
+serde_json = "1.0.145"
+swc_core = { version = "42.0.*", features = [
+  "ecma_plugin_transform",
+  "ecma_parser",
+  "ecma_codegen",
+  "common",
+] }
+
+# .cargo/config.toml defines few alias to build plugin.
+# cargo build-wasip1 generates wasm32-wasip1 binary
+# cargo build-wasm32 generates wasm32-unknown-unknown binary.

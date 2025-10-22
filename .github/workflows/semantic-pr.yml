@@ -1,0 +1,29 @@
+name: 'Lint PR'
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect-scopes
+        run: |
+          scopes=$(ls packages | tr '\n' '\n')
+          echo "scopes<<EOF" >> $GITHUB_OUTPUT
+          echo "$scopes" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - uses: amannn/action-semantic-pull-request@v6
+        with:
+          scopes: ${{ steps.detect-scopes.outputs.scopes }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

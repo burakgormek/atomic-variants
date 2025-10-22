@@ -1,0 +1,14 @@
+plugin:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ['packages/plugin/**']
+
+swc:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ['packages/swc/**']
+
+core:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ['packages/core/**']

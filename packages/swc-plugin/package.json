@@ -1,0 +1,23 @@
+{
+  "name": "@atomic-variants/swc-plugin",
+  "version": "0.1.0",
+  "description": "An SWC plugin for atomic-variants to enable responsive TailwindCSS variants during compilation.",
+  "keywords": [
+    "atomic-variants",
+    "tailwindcss",
+    "swc",
+    "plugin",
+    "responsive",
+    "variants"
+  ],
+  "license": "MIT",
+  "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
+  "main": "swc_plugin_atomic_variants.wasm",
+  "scripts": {
+    "build": "cargo build --release -p swc_plugin_atomic_variants --target wasm32-wasip1 && cp ./target/wasm32-wasip1/release/swc_plugin_atomic_variants.wasm .",
+    "prepublishOnly": "cargo build-wasip1 --release",
+    "release": "bun publish --dry-run",
+    "test": "cargo test"
+  },
+  "preferUnplugged": true
+}

@@ -1,0 +1,39 @@
+{
+  "include-component-in-tag": true,
+  "tag-separator": "@",
+  "separate-pull-requests": true,
+  "packages": {
+    "packages/core": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "core"
+    },
+    "packages/swc-plugin": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "swc"
+    },
+    "packages/webpack-plugin": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "webpack"
+    },
+    "packages/next-plugin": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "next-plugin"
+    },
+    "packages/vite-plugin": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "vite"
+    }
+  },
+  "plugins": [
+    {
+      "type": "node-workspace",
+      "updatePeerDependencies": true
+    }
+  ],
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}

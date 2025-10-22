@@ -1,0 +1,61 @@
+{
+  "name": "@atomic-variants/next-plugin",
+  "version": "0.1.0",
+  "description": "A Next.js plugin for atomic-variants to enable responsive, type-safe TailwindCSS variants at build time.",
+  "keywords": [
+    "atomic-variants",
+    "tailwindcss",
+    "nextjs",
+    "plugin",
+    "responsive",
+    "variants",
+    "type-safe"
+  ],
+  "bugs": {
+    "url": "https://github.com/burakgormek/atomic-variants/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/burakgormek/atomic-variants"
+  },
+  "license": "MIT",
+  "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown src/index.ts",
+    "release": "bun publish --dry-run",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@atomic-variants/constants": "workspace:*",
+    "@atomic-variants/swc-plugin": "workspace:*",
+    "@atomic-variants/webpack-plugin": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/jest": "^30.0.0",
+    "next": "^15.5.5",
+    "tsdown": "^0.15.7",
+    "typescript": "^5",
+    "webpack": "^5.102.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
