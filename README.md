@@ -203,9 +203,9 @@ variants({ padding: { xs: "small", md: "large" } });
 
 These projects were the main inspiration for Atomic Variants. They’re both mature, well-tested, and excellent libraries that have greatly influenced this project.
 
-Atomic Variants was created as an alternative that supports responsive variants. For **Tailwind** v4, the only way to implement responsive variants is through a custom plugin.
-PR wasn’t ideal because the existing libraries are already quite complex and difficult to maintain, so **Atomic Variants** was developed as a separate experiment.
+This library was created as an alternative that supports responsive variants. For **Tailwind** v4, the only way to implement responsive variants is through a custom plugin.
+PR wasn’t ideal because the existing libraries are already quite complex and difficult to maintain, so it was developed as a separate experiment.
 
 ## License
 
-Atomic Variants library is licensed under [The MIT License](LICENSE).
+This library is licensed under [The MIT License](LICENSE).
