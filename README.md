@@ -1,5 +1,13 @@
 # 📦 atomic-variants
 
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.png">
+      <source media="(prefers-color-scheme: light)" srcset=".github/assets/logo-light.png" >
+      <img alt="Atomic Variants logo" src=".github/assets/logo-dark.png">
+    </picture>
+</p>
+
 A tiny utility for creating type-safe TailwindCSS variants — with **responsive** support.
 
 ---
