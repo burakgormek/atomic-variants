@@ -196,3 +196,7 @@ variants({ padding: { xs: "small", md: "large" } });
 > **Note:** The **xs** value is treated as default (no prefix), and other breakpoints (**sm**, **md**, **lg**, etc.) automatically get their respective prefixes.
 
 > To use **responsive variants**, install the optional plugins for your framework. These plugins ensure Tailwind includes generated responsive classes during compilation.
+
+## License
+
+Atomic Variants library is licensed under [The MIT License](LICENSE).
