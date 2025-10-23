@@ -1,5 +1,3 @@
-# 📦 atomic-variants
-
 <p align="center">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.svg">
@@ -8,7 +6,7 @@
     </picture>
 </p>
 
-A tiny utility for creating type-safe TailwindCSS variants — with **responsive** support.
+<p align="center">Tailwind-ready responsive, type-safe variants</p>
 
 ---
 
@@ -37,9 +35,10 @@ bun add atomic-variants
 To enable **responsive variants**, install the optional atomic-variants build plugins.
 These plugins ensure Tailwind includes generated responsive classes during compilation.
 
-#### Next.js Setup
+<details>
+<summary>Next.js</summary>
 
-Install the atomic-variants Next.js plugin:
+Install the Next.js plugin for atomic-variants as a development dependency:
 
 ```bash
 npm install @atomic-variants/next-plugin -D
@@ -51,11 +50,11 @@ pnpm add @atomic-variants/next-plugin -D
 bun add @atomic-variants/next-plugin -D
 ```
 
-then wrap your configuration with with atomic-variants:
+Wrap your Next.js config with the Atomic Variants plugin to enable responsive variant.
 
 ```js
-import withAtomicVariants from "@atomic-variants/next-plugin"; // Import the atomic-variants plugin
 import type { NextConfig } from "next";
+import withAtomicVariants from "@atomic-variants/next-plugin";
 
 const nextConfig: NextConfig = {
   /* ... */
@@ -64,41 +63,68 @@ const nextConfig: NextConfig = {
 export default withAtomicVariants(nextConfig); // Wrap your config with the plugin
 ```
 
-Add the generated folder to `.gitignore`:
+Add the generated `.atomic-variants` folder to your `.gitignore` to prevent it from being committed.
 
-```
+```txt
 .atomic-variants
 ```
 
-Add generated classes to your `globals.css` (or wherever tailwindcss is imported):
+Finally, make Tailwind aware of the generated classes by importing the folder in your **global.css**.
 
 ```css
 @import "tailwindcss";
 @source "../atomic-variants";
 ```
 
-### Tailwind Merge (**recommended**)
+This tells Tailwind to **scan** the generated variant files for class names during compilation, so those classes are recognized and compiled into your CSS.
 
-By default, **atomic-variants does not handle class conflicts**, so using [`tailwind-merge`](https://github.com/dcastil/tailwind-merge) is recommended if you want automatic conflict resolution.
+</details>
+
+<details>
+<summary>Vite</summary>
+
+Install the Next.js plugin for atomic-variants as a development dependency:
 
 ```bash
-npm install tailwind-merge
+npm install @atomic-variants/vite-plugin -D
 # --- or ---
-yarn add tailwind-merge
+yarn add @atomic-variants/vite-plugin -D
 # --- or ---
-pnpm add tailwind-merge
+pnpm add @atomic-variants/vite-plugin -D
 # --- or ---
-bun add tailwind-merge
+bun add @atomic-variants/vite-plugin -D
 ```
 
-After installing, configure it globally using the default config:
+Update your vite.config.ts to include the Atomic Variants plugin.
 
 ```js
-import { defaultConfig } from "atomic-variants";
-import { twMerge } from "tailwind-merge";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import tailwindcss from "@tailwindcss/vite";
+import atomicVariants from "@atomic-variants/vite-plugin";
 
-defaultConfig.finalize = twMerge;
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss(), atomicVariants()],
+});
 ```
+
+Add the generated `.atomic-variants` folder to your `.gitignore` to prevent it from being committed.
+
+```txt
+.atomic-variants
+```
+
+Finally, make Tailwind aware of the generated classes by importing the folder in your **global.css**.
+
+```css
+@import "tailwindcss";
+@source "../atomic-variants";
+```
+
+This tells Tailwind to **scan** the generated variant files for class names during compilation, so those classes are recognized and compiled into your CSS.
+
+</details>
 
 ## ⚙️ API
 
