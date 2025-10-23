@@ -126,6 +126,32 @@ This tells Tailwind to **scan** the generated variant files for class names duri
 
 </details>
 
+<details>
+<summary>Tailwind Merge</summary>
+
+By default, **atomic-variants does not handle class conflicts**, so using [`tailwind-merge`](https://github.com/dcastil/tailwind-merge) is recommended if you want automatic conflict resolution.
+
+```bash
+npm install @tailwind-merge
+# --- or ---
+yarn add @tailwind-merge
+# --- or ---
+pnpm add @tailwind-merge
+# --- or ---
+bun add @tailwind-merge
+```
+
+After installing, configure it globally using the default config:
+
+```js
+import { defaultConfig } from "atomic-variants";
+import { twMerge } from "tailwind-merge";
+
+defaultConfig.finalize = twMerge;
+```
+
+</details>
+
 ## ⚙️ API
 
 ### `atomic(config)`
@@ -199,7 +225,7 @@ variants({ padding: { xs: "small", md: "large" } });
 
 ## Acknowledgements
 
-[cva](https://github.com/joe-bell/cva), [tailwind-variants](https://github.com/heroui-inc/tailwind-variants)
+[cva](https://github.com/joe-bell/cva) [tailwind-variants](https://github.com/heroui-inc/tailwind-variants)
 
 These projects were the main inspiration for Atomic Variants. They’re both mature, well-tested, and excellent libraries that have greatly influenced this project.
 
