@@ -197,6 +197,14 @@ variants({ padding: { xs: "small", md: "large" } });
 
 > To use **responsive variants**, install the optional plugins for your framework. These plugins ensure Tailwind includes generated responsive classes during compilation.
 
+## Acknowledgements
+
+[cva](https://github.com/joe-bell/cva), (tailwind-variants)[https://github.com/heroui-inc/tailwind-variants]
+These projects were the main inspiration for Atomic Variants. They’re both mature, well-tested, and excellent libraries that have greatly influenced this project.
+
+Atomic Variants was created as an alternative to explore ideas like responsive variants. For **Tailwind** v4, the only way to implement responsive variants is through a custom plugin.
+PR wasn’t ideal because the existing libraries are already quite complex and difficult to maintain, so **Atomic Variants** was developed as a separate experiment.
+
 ## License
 
 Atomic Variants library is licensed under [The MIT License](LICENSE).
