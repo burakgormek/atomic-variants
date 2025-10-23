@@ -1,3 +1,5 @@
+&nbsp;
+
 <p align="center">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.svg">
@@ -8,15 +10,14 @@
 
 <p align="center">Tailwind-ready responsive, type-safe variants</p>
 
----
+&nbsp;
 
 ## 🚀 Features
 
-- 🧩 **Composable Variants** – define variants with base and conditional classes.
-- 📱 **Responsive Variants** – automatically handle responsive prefixes (`sm:`, `md:`, etc.).
-- 🔒 **Type-Safe** – fully typed with TypeScript for safer variant usage.
-- ⚡️ **Lightweight** – zero dependencies, minimal runtime.
-- 🎨 **Tailwind-Ready** – works with TailwindCSS v3 & v4 and supports `tailwind-merge`.
+- 🧩 **Composable Variants** – Define variants with base and conditional classes effortlessly.
+- 📱 **Responsive Variants** – Automatically handle responsive prefixes (sm:, md:, etc.).
+- 🔒 **Type-Safe** – Fully typed with TypeScript for safer variant usage.
+- ⚡️ **Lightweight** – Zero dependencies, minimal runtime.
 
 ## 📦 Installation
 
@@ -32,8 +33,7 @@ bun add atomic-variants
 
 ### Responsive Variants
 
-To enable **responsive variants**, install the optional atomic-variants build plugins.
-These plugins ensure Tailwind includes generated responsive classes during compilation.
+To use responsive variants, install the **optional plugins** for your framework. These plugins ensure Tailwind includes generated responsive classes during compilation.
 
 <details>
 <summary>Next.js</summary>
