@@ -127,7 +127,7 @@ This tells Tailwind to **scan** the generated variant files for class names duri
 </details>
 
 <details>
-<summary>Tailwind Merge</summary>
+<summary>Tailwind Merge (optional)</summary>
 
 By default, **atomic-variants does not handle class conflicts**, so using [`tailwind-merge`](https://github.com/dcastil/tailwind-merge) is recommended if you want automatic conflict resolution.
 
@@ -149,6 +149,8 @@ import { twMerge } from "tailwind-merge";
 
 defaultConfig.finalize = twMerge;
 ```
+
+This ensures automatic conflict resolution for Tailwind CSS classes in the final result.
 
 </details>
 
