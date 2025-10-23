@@ -2,9 +2,9 @@
 
 <p align="center">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.png">
-      <source media="(prefers-color-scheme: light)" srcset=".github/assets/logo-light.png" >
-      <img alt="Atomic Variants logo" src=".github/assets/logo-dark.png">
+      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset=".github/assets/logo-light.svg" >
+      <img alt="Atomic Variants logo" src=".github/assets/logo-dark.svg">
     </picture>
 </p>
 
