@@ -199,7 +199,7 @@ variants({ padding: { xs: "small", md: "large" } });
 
 ## Acknowledgements
 
-[cva](https://github.com/joe-bell/cva), (tailwind-variants)[https://github.com/heroui-inc/tailwind-variants]
+[cva](https://github.com/joe-bell/cva), [tailwind-variants](https://github.com/heroui-inc/tailwind-variants)
 These projects were the main inspiration for Atomic Variants. They’re both mature, well-tested, and excellent libraries that have greatly influenced this project.
 
 Atomic Variants was created as an alternative to explore ideas like responsive variants. For **Tailwind** v4, the only way to implement responsive variants is through a custom plugin.
