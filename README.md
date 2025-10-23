@@ -8,7 +8,7 @@
     </picture>
 </p>
 
-<p align="center">Tailwind-ready responsive, type-safe variants</p>
+<p align="center">Tailwind-ready responsive, type-safe variants.</p>
 
 &nbsp;
 
@@ -130,20 +130,17 @@ This tells Tailwind to **scan** the generated variant files for class names duri
 
 ### `atomic(config)`
 
-Creates a **composable, type-safe variants object** for TailwindCSS.
+Creates a **type-safe, composable variant function**.
 
-**Parameters:**
-
-| Name                 | Type     | Description                                                                                                    |
-| -------------------- | -------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `base`               | `string` | Base classes applied by default.                                                                               |
-| `override`           | `string` | Classes that **override variant classes**.                                                                     |
-| `variants`           | `object` | An object defining variant keys and their corresponding class values. Boolean and string values are supported. |
-| `responsiveVariants` | `boolean | string[]`                                                                                                      | Enable responsive variant support. `true` applies to all variants; or provide an array of variant keys to make only specific variants responsive. |
+| Property               | Type                                                | Description                                                                                                                                         |
+| ---------------------- | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **base**               | `string`                                            | Base classes applied by default.                                                                                                                    |
+| **override**           | `string`                                            | Classes that take precedence over **base** and **variant** classes.                                                                                 |
+| **variants**           | `Record<string, Record<string \| boolean, string>>` | Defines available variants and their corresponding class names.<br><br>Supports both string and boolean variant values.                             |
+| **responsiveVariants** | `boolean \| string[]`                               | Enables responsive variant support.<br><br>- `true` applies responsiveness to all variants.<br>- An array applies it only to specific variant keys. |
 
 ```ts
-import { atomic, defaultConfig } from "atomic-variants";
-import { twMerge } from "tailwind-merge";
+import { atomic } from "atomic-variants";
 
 const variants = atomic({
   base: "text-center",
@@ -170,18 +167,13 @@ variants();
 
 variants({ className: "leading-snug", size: "extraSmall" });
 // => text-center text-xs leading-none leading-snug
-
-defaultConfig.finalize = twMerge;
-
-variants({ className: "leading-snug", size: "extraSmall" });
-// => text-center text-xs leading-snug
 ```
 
-> **Note:** Classes passed via `className` take priority over `override`, which takes priority over `base` and `variants`.
+> **Note:** Classes passed via **className** take priority over `override`, which takes priority over `base` and `variants`.
 
 ### Responsive Variants
 
-> **Note:** If you want to use responsive variants, you must install the library's SWC and Webpack plugin so Tailwind can detect the generated classes.
+You can also enable **responsive variants**, allowing you to apply different variant values at specific breakpoints. This can be done for all variants or only for specific variant keys.
 
 ```ts
 import { atomic } from "atomic-variants";
@@ -201,4 +193,6 @@ variants({ padding: { xs: "small", md: "large" } });
 // => w-20 h-20 p-1 md:p-2
 ```
 
-> **Note:** The xs value is treated as the default and does not get a responsive prefix. All other breakpoints (sm, md, lg, etc.) will have their respective prefixes.
+> **Note:** The **xs** value is treated as default (no prefix), and other breakpoints (**sm**, **md**, **lg**, etc.) automatically get their respective prefixes.
+
+> To use **responsive variants**, install the optional plugins for your framework. These plugins ensure Tailwind includes generated responsive classes during compilation.
