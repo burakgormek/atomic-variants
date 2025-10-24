@@ -1,14 +1,34 @@
-plugin:
+core:
   - any:
       - changed-files:
-          - any-glob-to-any-file: ['packages/plugin/**']
+          - any-glob-to-any-file: ["packages/core/**"]
 
 swc:
   - any:
       - changed-files:
-          - any-glob-to-any-file: ['packages/swc/**']
+          - any-glob-to-any-file: ["packages/swc/**"]
 
-core:
+webpack:
   - any:
       - changed-files:
-          - any-glob-to-any-file: ['packages/core/**']
+          - any-glob-to-any-file: ["packages/webpack-plugin/**"]
+
+next:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ["packages/next-plugin/**"]
+
+vite:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ["packages/vite-plugin/**"]
+
+website:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ["website/**"]
+
+examples:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ["examples/**"]

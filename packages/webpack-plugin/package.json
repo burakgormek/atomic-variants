@@ -1,7 +1,7 @@
 {
   "name": "@atomic-variants/webpack-plugin",
   "version": "0.1.0",
-  "description": "A Webpack plugin for atomic-variants that extracts classes.",
+  "description": "Webpack plugin for atomic-variants that extracts classes.",
   "keywords": [
     "atomic-variants",
     "tailwindcss",

@@ -9,7 +9,7 @@
       "version": "0.0.1",
     },
     "packages/core": {
-      "name": "@atomic-variants/core",
+      "name": "atomic-variants",
       "version": "0.1.0",
       "devDependencies": {
         "@types/bun": "latest",
@@ -73,8 +73,6 @@
   },
   "packages": {
     "@atomic-variants/constants": ["@atomic-variants/constants@workspace:packages/constants"],
-
-    "@atomic-variants/core": ["@atomic-variants/core@workspace:packages/core"],
 
     "@atomic-variants/next-plugin": ["@atomic-variants/next-plugin@workspace:packages/next-plugin"],
 
@@ -429,6 +427,8 @@
     "ansis": ["ansis@4.2.0", "", {}, "sha512-HqZ5rWlFjGiV0tDm3UxxgNRqsOTniqoKZu0pIAfh7TZQMGuZK+hH0drySty0si0QXj1ieop4+SkSfPZBPPkHig=="],
 
     "ast-kit": ["ast-kit@2.1.3", "", { "dependencies": { "@babel/parser": "^7.28.4", "pathe": "^2.0.3" } }, "sha512-TH+b3Lv6pUjy/Nu0m6A2JULtdzLpmqF9x1Dhj00ZoEiML8qvVA9j1flkzTKNYgdEhWrjDwtWNpyyCUbfQe514g=="],
+
+    "atomic-variants": ["atomic-variants@workspace:packages/core"],
 
     "baseline-browser-mapping": ["baseline-browser-mapping@2.8.18", "", { "bin": { "baseline-browser-mapping": "dist/cli.js" } }, "sha512-UYmTpOBwgPScZpS4A+YbapwWuBwasxvO/2IOHArSsAhL/+ZdmATBXTex3t+l2hXwLVYK382ibr/nKoY9GKe86w=="],
 
