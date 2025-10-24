@@ -1,7 +1,7 @@
 {
   "name": "@atomic-variants/next-plugin",
   "version": "0.1.0",
-  "description": "A Next.js plugin for atomic-variants to enable responsive, type-safe TailwindCSS variants at build time.",
+  "description": "Next.js plugin for atomic-variants to enable responsive, type-safe TailwindCSS variants at build time.",
   "keywords": [
     "atomic-variants",
     "tailwindcss",

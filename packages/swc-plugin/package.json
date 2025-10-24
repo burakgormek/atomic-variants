@@ -1,7 +1,7 @@
 {
   "name": "@atomic-variants/swc-plugin",
   "version": "0.1.0",
-  "description": "An SWC plugin for atomic-variants to enable responsive TailwindCSS variants during compilation.",
+  "description": "SWC plugin for atomic-variants to enable responsive TailwindCSS variants during compilation.",
   "keywords": [
     "atomic-variants",
     "tailwindcss",
@@ -19,5 +19,8 @@
     "release": "bun publish --dry-run",
     "test": "cargo test"
   },
-  "preferUnplugged": true
+  "preferUnplugged": true,
+  "publishConfig": {
+    "access": "public"
+  }
 }
