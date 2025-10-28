@@ -6,31 +6,66 @@
     "packages/core": {
       "release-type": "node",
       "bump-minor-pre-major": true,
-      "extra-label": "core"
+      "extra-label": "core",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/core'].version"
+        }
+      ]
     },
     "packages/swc-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
       "component": "swc-plugin",
-      "extra-label": "swc-plugin"
+      "extra-label": "swc-plugin",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/swc-plugin'].version"
+        }
+      ]
     },
     "packages/webpack-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
       "component": "webpack-plugin",
-      "extra-label": "webpack-plugin"
+      "extra-label": "webpack-plugin",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/webpack-plugin'].version"
+        }
+      ]
     },
     "packages/next-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
       "component": "next-plugin",
-      "extra-label": "next-plugin"
+      "extra-label": "next-plugin",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/next-plugin'].version"
+        }
+      ]
     },
     "packages/vite-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
       "component": "vite-plugin",
-      "extra-label": "vite-plugin"
+      "extra-label": "vite-plugin",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/vite-plugin'].version"
+        }
+      ]
     }
   },
   "plugins": [
