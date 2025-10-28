@@ -43,11 +43,11 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@atomic-variants/constants": "workspace:*",
     "@atomic-variants/swc-plugin": "workspace:*",
     "@swc/core": "^1.13.5"
   },
   "devDependencies": {
+    "@atomic-variants/constants": "workspace:*",
     "@types/bun": "latest",
     "@types/jest": "^30.0.0",
     "tsdown": "^0.15.7",
