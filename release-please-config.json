@@ -18,6 +18,7 @@
     "packages/swc-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
+      "component": "swc-plugin",
       "extra-label": "swc-plugin",
       "extra-files": [
         {
@@ -30,6 +31,7 @@
     "packages/webpack-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
+      "component": "webpack-plugin",
       "extra-label": "webpack-plugin",
       "extra-files": [
         {
@@ -42,6 +44,7 @@
     "packages/next-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
+      "component": "next-plugin",
       "extra-label": "next-plugin",
       "extra-files": [
         {
@@ -54,6 +57,7 @@
     "packages/vite-plugin": {
       "release-type": "node",
       "bump-minor-pre-major": true,
+      "component": "vite-plugin",
       "extra-label": "vite-plugin",
       "extra-files": [
         {
