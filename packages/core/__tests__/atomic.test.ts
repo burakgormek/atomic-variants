@@ -5,7 +5,20 @@ describe("atomic", () => {
     const variants = atomic({
       base: "text-center",
       override: "font-bold",
-      variants: {},
+      variants: {
+        size: {
+          small: "test",
+        },
+        padding: {
+          medium: "test",
+          small: "test",
+        },
+        color: {
+          backlground: "test",
+          red: "best",
+        },
+      },
+      responsiveVariants: true,
     });
 
     expect(variants()).toBe("text-center font-bold");

@@ -7,23 +7,60 @@ export type ClassNameProps<T extends string = never> = {
   [K in T as `${K}ClassName`]?: string;
 };
 
+type KeysOf<T> = T extends readonly (infer K)[] ? K : never;
 type ConvertBoolean<T> = T extends "true" | "false" ? boolean : T;
+
+type HasRequiredKeys<T> = T extends true
+  ? true
+  : KeysOf<T> extends never
+  ? false
+  : true;
+type ConditionalArgs<Condition extends boolean, Args> = Condition extends true
+  ? [Args]
+  : [Args?];
+
 type BreakPoints = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+
+type VariantObject<
+  Variant,
+  ResponsiveVariants extends true | Array<keyof Variant>
+> = {
+  [K in keyof Variant]: VariantValues<K, Variant, ResponsiveVariants>;
+};
+
+type VariantValues<
+  K extends keyof Variant,
+  Variant,
+  ResponsiveVariants extends true | Array<keyof Variant>
+> =
+  | ConvertBoolean<keyof Variant[K]>
+  | (ResponsiveVariants extends true
+      ? Partial<Record<BreakPoints, ConvertBoolean<keyof Variant[K]>>>
+      : ResponsiveVariants extends Array<keyof Variant>
+      ? Extract<K, ResponsiveVariants[number]> extends never
+        ? undefined
+        : Partial<Record<BreakPoints, ConvertBoolean<keyof Variant[K]>>>
+      : undefined);
 
 type VariantParams<
   Variant,
-  ResponsiveVariants extends boolean | Array<keyof Variant>
-> = ClassNameProps & {
-  [K in keyof Variant]?:
-    | ConvertBoolean<keyof Variant[K]>
-    | (ResponsiveVariants extends true
-        ? Partial<Record<BreakPoints, ConvertBoolean<keyof Variant[K]>>>
-        : ResponsiveVariants extends Array<keyof Variant>
-        ? Extract<K, ResponsiveVariants[number]> extends never
-          ? undefined
-          : Partial<Record<BreakPoints, ConvertBoolean<keyof Variant[K]>>>
-        : undefined);
-};
+  ResponsiveVariants extends true | Array<keyof Variant>,
+  RequiredVariants extends true | Array<keyof Variant>
+> = ClassNameProps &
+  (RequiredVariants extends true
+    ? Required<VariantObject<Variant, ResponsiveVariants>>
+    : Required<
+        Pick<
+          VariantObject<Variant, ResponsiveVariants>,
+          KeysOf<RequiredVariants>
+        >
+      > &
+        Partial<
+          Omit<
+            VariantObject<Variant, ResponsiveVariants>,
+            KeysOf<RequiredVariants>
+          >
+        >);
 
 export let config = {
   finalize: (result: string) => result,
@@ -31,7 +68,8 @@ export let config = {
 
 export function atomic<
   Variants extends Record<string, Record<string, string>>,
-  ResponsiveVariants extends boolean | Array<keyof Variants> = false
+  ResponsiveVariants extends true | Array<keyof Variants> = [],
+  RequiredVariants extends true | Array<keyof Variants> = []
 >({
   base = "",
   override,
@@ -42,15 +80,22 @@ export function atomic<
   base?: string;
   override?: string;
   variants?: Variants;
-  defaultVariants?: VariantParams<Variants, ResponsiveVariants>;
+  defaultVariants?: VariantParams<
+    Variants,
+    ResponsiveVariants,
+    RequiredVariants
+  >;
   responsiveVariants?: ResponsiveVariants;
+  requiredVariants?: RequiredVariants;
 }) {
   return (
-    {
-      className,
-      ...paramVariants
-    }: VariantParams<Variants, ResponsiveVariants> = { className: undefined }
+    ...args: ConditionalArgs<
+      HasRequiredKeys<RequiredVariants>,
+      VariantParams<Variants, ResponsiveVariants, RequiredVariants>
+    >
   ) => {
+    const [{ className, ...paramVariants } = { className: undefined }] = args;
+
     let classes: (string | undefined)[] = [base];
     const filteredParamVariants = Object.fromEntries(
       Object.entries(paramVariants).filter(([_, value]) => value !== undefined)
