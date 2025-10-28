@@ -42,7 +42,7 @@
     },
     "packages/vite-plugin": {
       "name": "@atomic-variants/vite-plugin",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "dependencies": {
         "@atomic-variants/swc-plugin": "workspace:*",
         "@swc/core": "^1.13.5"
@@ -59,10 +59,8 @@
     "packages/webpack-plugin": {
       "name": "@atomic-variants/webpack-plugin",
       "version": "0.1.0",
-      "dependencies": {
-        "@atomic-variants/constants": "workspace:*"
-      },
       "devDependencies": {
+        "@atomic-variants/constants": "workspace:*",
         "@types/bun": "latest",
         "@types/jest": "^30.0.0",
         "tsdown": "^0.15.7",
