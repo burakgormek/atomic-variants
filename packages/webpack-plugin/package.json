@@ -41,10 +41,8 @@
     "release": "bun publish",
     "test": "bun test"
   },
-  "dependencies": {
-    "@atomic-variants/constants": "workspace:*"
-  },
   "devDependencies": {
+    "@atomic-variants/constants": "workspace:*",
     "@types/bun": "latest",
     "@types/jest": "^30.0.0",
     "tsdown": "^0.15.7",
