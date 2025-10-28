@@ -3,22 +3,22 @@ core:
       - changed-files:
           - any-glob-to-any-file: ["packages/core/**"]
 
-swc:
+swc-plugin:
   - any:
       - changed-files:
           - any-glob-to-any-file: ["packages/swc/**"]
 
-webpack:
+webpack-plugin:
   - any:
       - changed-files:
           - any-glob-to-any-file: ["packages/webpack-plugin/**"]
 
-next:
+next-plugin:
   - any:
       - changed-files:
           - any-glob-to-any-file: ["packages/next-plugin/**"]
 
-vite:
+vite-plugin:
   - any:
       - changed-files:
           - any-glob-to-any-file: ["packages/vite-plugin/**"]
