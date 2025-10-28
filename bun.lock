@@ -9,7 +9,7 @@
       "version": "0.0.1",
     },
     "packages/core": {
-      "name": "@atomic-variants/core",
+      "name": "atomic-variants",
       "version": "0.1.0",
       "devDependencies": {
         "@types/bun": "latest",
@@ -23,11 +23,11 @@
       "name": "@atomic-variants/next-plugin",
       "version": "0.1.0",
       "dependencies": {
-        "@atomic-variants/constants": "workspace:*",
         "@atomic-variants/swc-plugin": "workspace:*",
         "@atomic-variants/webpack-plugin": "workspace:*",
       },
       "devDependencies": {
+        "@atomic-variants/constants": "workspace:*",
         "@types/bun": "latest",
         "@types/jest": "^30.0.0",
         "next": "^15.5.5",

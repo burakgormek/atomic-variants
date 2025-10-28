@@ -43,11 +43,11 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@atomic-variants/constants": "workspace:*",
     "@atomic-variants/swc-plugin": "workspace:*",
     "@atomic-variants/webpack-plugin": "workspace:*"
   },
   "devDependencies": {
+    "@atomic-variants/constants": "workspace:*",
     "@types/bun": "latest",
     "@types/jest": "^30.0.0",
     "next": "^15.5.5",
