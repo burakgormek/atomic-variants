@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "sort-package": "bunx sort-package-json 'package.json' 'packages/*/package.json'"
+    "sort-package": "bunx sort-package-json 'package.json' 'packages/*/package.json'",
+    "postinstall": "bun fix-comma-lock"
   }
 }
