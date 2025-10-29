@@ -58,7 +58,7 @@
     },
     "packages/webpack-plugin": {
       "name": "@atomic-variants/webpack-plugin",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@atomic-variants/constants": "workspace:*",
         "@types/bun": "latest",
