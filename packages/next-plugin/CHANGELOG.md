@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.1.2...next-plugin@v0.1.3) (2025-10-29)
+
+
+### Bug Fixes
+
+* **next:** move constants to the devDependencies ([#4](https://github.com/burakgormek/atomic-variants/issues/4)) ([2ecb4cb](https://github.com/burakgormek/atomic-variants/commit/2ecb4cbd9339bda727cbacd542d96e0aa9d05a0f))
+
 ## [0.1.2](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.1.1...next-plugin@v0.1.2) (2025-10-28)
 
 
