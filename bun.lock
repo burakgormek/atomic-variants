@@ -10,7 +10,7 @@
     },
     "packages/core": {
       "name": "atomic-variants",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "devDependencies": {
         "@types/bun": "latest",
         "@types/jest": "^30.0.0",
