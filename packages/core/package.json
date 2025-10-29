@@ -1,6 +1,6 @@
 {
   "name": "atomic-variants",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A utility for creating type-safe Tailwind CSS variants.",
   "keywords": [
     "tailwindcss",

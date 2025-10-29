@@ -1,5 +1,5 @@
 {
-  "packages/core": "0.1.0",
+  "packages/core": "0.2.0",
   "packages/swc-plugin": "0.1.0",
   "packages/webpack-plugin": "0.1.1",
   "packages/next-plugin": "0.1.1",
