@@ -1,5 +1,6 @@
-export type GetVariants<T extends (...args: never) => unknown> =
-  Parameters<T>[0];
+export type GetVariants<T extends (...args: never) => unknown> = Required<
+  Parameters<T>
+>[0];
 
 export type ClassNameProps<T extends string = never> = {
   className?: string;
@@ -49,14 +50,9 @@ type VariantParams<
 > = ClassNameProps &
   (RequiredVariants extends true
     ? Required<VariantObject<Variant, ResponsiveVariants>>
-    : Required<
-        Pick<
-          VariantObject<Variant, ResponsiveVariants>,
-          KeysOf<RequiredVariants>
-        >
-      > &
-        Partial<
-          Omit<
+    : Partial<VariantObject<Variant, ResponsiveVariants>> &
+        Required<
+          Pick<
             VariantObject<Variant, ResponsiveVariants>,
             KeysOf<RequiredVariants>
           >
@@ -94,23 +90,22 @@ export function atomic<
       VariantParams<Variants, ResponsiveVariants, RequiredVariants>
     >
   ) => {
-    const [{ className, ...paramVariants } = { className: undefined }] = args;
-
-    let classes: (string | undefined)[] = [base];
-    const filteredParamVariants = Object.fromEntries(
-      Object.entries(paramVariants).filter(([_, value]) => value !== undefined)
-    );
-
     if (typeof variants == "undefined") {
-      return classes.join(" ").trim();
+      return base.trim();
     }
 
-    for (const [key, variant] of Object.entries({
+    const [{ className, ...paramVariants } = { className: undefined }] = args;
+    const mergedVariants = Object.entries({
       ...defaultVariants,
-      ...filteredParamVariants,
-    }) as [keyof Variants, keyof Variants[keyof Variants]][]) {
-      // TODO
-      if (!variants[key]) {
+      ...paramVariants,
+    }).filter(([_, value]) => typeof value != "undefined") as [
+      keyof Variants,
+      string
+    ][];
+    let classes: string[] = [base];
+
+    for (const [key, variant] of mergedVariants) {
+      if (typeof variants[key] == "undefined") {
         continue;
       }
 
@@ -120,18 +115,18 @@ export function atomic<
       if (typeof variant == "object" && isResponsiveVariant) {
         for (const [size, resVariant] of Object.entries(variant) as [
           BreakPoints,
-          keyof Variants[keyof Variants]
+          string
         ][]) {
           if (size == "xs") {
-            classes.push(variants[key][resVariant as string]);
+            classes.push(variants[key][resVariant]!);
           } else {
-            classes.push(`${size}:${variants[key][resVariant as string]}`);
+            classes.push(`${size}:${variants[key][resVariant]}`);
           }
         }
         continue;
       }
 
-      const currentVariant = variants[key][variant as string];
+      const currentVariant = variants[key][variant];
       if (currentVariant) {
         classes.push(currentVariant);
       }
