@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.1...atomic-variants@v0.2.2) (2025-11-11)
+
+
+### Bug Fixes
+
+* **core:** resolve responsive defaultVariants ([#26](https://github.com/burakgormek/atomic-variants/issues/26)) ([72f6207](https://github.com/burakgormek/atomic-variants/commit/72f6207a01a8372533a3bf4468db60048a21f069))
+
 ## [0.2.1](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.0...atomic-variants@v0.2.1) (2025-11-05)
 
 
