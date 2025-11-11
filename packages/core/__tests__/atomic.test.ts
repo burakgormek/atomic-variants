@@ -110,6 +110,31 @@ describe("atomic", () => {
     );
   });
 
+  it("applies default variants when no variant is provided", () => {
+    const variants = atomic({
+      base: "w-20 h-20",
+      variants: {
+        color: {
+          primary: "bg-blue-50",
+          secondary: "bg-red-50",
+        },
+        padding: {
+          small: "px-1 py-1",
+          large: "px-2 py-2",
+        },
+      },
+      responsiveVariants: true,
+      defaultVariants: {
+        color: "primary",
+        padding: { xs: "small", md: "large" },
+      },
+    });
+
+    expect(variants({ padding: undefined })).toBe(
+      "w-20 h-20 bg-blue-50 px-1 py-1 md:px-2 md:py-2"
+    );
+  });
+
   it("handles responsive variants with specific keys", () => {
     const variants = atomic({
       base: "w-20 h-20",

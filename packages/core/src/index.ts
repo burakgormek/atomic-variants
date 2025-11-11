@@ -94,17 +94,24 @@ export function atomic<
       return base.trim();
     }
 
-    const [{ className, ...paramVariants } = { className: undefined }] = args;
-    const mergedVariants = Object.entries({
-      ...defaultVariants,
-      ...paramVariants,
-    }).filter(([_, value]) => typeof value != "undefined") as [
-      keyof Variants,
-      string
-    ][];
-    let classes: string[] = [base];
+    const [{ className, ...paramVariants } = { className: undefined }] =
+      args as [VariantParams<Variants, ResponsiveVariants, RequiredVariants>];
 
-    for (const [key, variant] of mergedVariants) {
+    let classes = [base];
+    let resultVariants = { ...defaultVariants };
+
+    for (const key in paramVariants) {
+      const typedKey = key as keyof typeof paramVariants;
+      const currentVariant = paramVariants[typedKey];
+
+      if (currentVariant != undefined) {
+        resultVariants[typedKey] = currentVariant;
+      }
+    }
+
+    for (const key in resultVariants) {
+      const variant = resultVariants[key];
+
       if (typeof variants[key] == "undefined") {
         continue;
       }
@@ -129,7 +136,7 @@ export function atomic<
         continue;
       }
 
-      const currentVariant = variants[key][variant];
+      const currentVariant = variants[key][variant as string];
       if (currentVariant) {
         classes.push(currentVariant);
       }
