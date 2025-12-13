@@ -8,7 +8,14 @@
     "packages/*"
   ],
   "scripts": {
-    "sort-package": "bunx sort-package-json 'package.json' 'packages/*/package.json'",
-    "postinstall": "bun fix-comma-lock"
+    "postinstall": "bun fix-comma-lock",
+    "prepare": "husky",
+    "sort-package": "bunx sort-package-json 'package.json' 'packages/*/package.json'"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "@commitlint/types": "^20.2.0",
+    "husky": "^9.1.7"
   }
 }
