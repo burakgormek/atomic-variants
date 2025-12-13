@@ -26,7 +26,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "style": "./atomic-variants.css"
     },
     "./package.json": "./package.json"
   },
@@ -35,7 +36,8 @@
   "types": "./dist/index.d.ts",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "atomic-variants.css"
   ],
   "scripts": {
     "build": "tsdown src/index.ts",
