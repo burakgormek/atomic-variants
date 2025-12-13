@@ -4,9 +4,15 @@
   "private": true,
   "license": "MIT",
   "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "examples/*"
+    ],
+    "catalog": {
+      "next": "16.0.10"
+    }
+  },
   "scripts": {
     "postinstall": "bun fix-comma-lock",
     "prepare": "husky",
