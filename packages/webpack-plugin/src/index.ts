@@ -1,20 +1,19 @@
 import fs from "fs";
 import type { Compiler, Compilation, sources } from "webpack";
-import {
-  OUTPUT_DIR,
-  OUTPUT_FILE_DIR,
-  ATOMIC_REGEX,
-} from "@atomic-variants/constants";
+import { ATOMIC_REGEX } from "@atomic-variants/constants";
 
 export default class AtomicVariantsPlugin {
-  private extractedClasses: Set<string>;
+  private extractedClasses = new Set<string>();
+  private debug: boolean = false;
+  private filePath?: string;
 
-  constructor(private _options: { debug?: boolean } = {}) {
-    this.extractedClasses = new Set<string>();
+  constructor(options: { filePath?: string; debug?: boolean } = {}) {
+    this.debug &&= options.debug as boolean;
+    this.filePath = options.filePath;
   }
 
   private log(...args: any[]) {
-    if (this._options.debug) {
+    if (this.debug) {
       console.log(...args);
     }
   }
@@ -48,12 +47,12 @@ export default class AtomicVariantsPlugin {
           Array.from(this.extractedClasses)
         );
 
-        fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-        // Write results to file
-        fs.writeFileSync(
-          OUTPUT_FILE_DIR,
-          Array.from(this.extractedClasses).join("\n")
-        );
+        if (this.filePath) {
+          fs.writeFileSync(
+            this.filePath,
+            `@source inline("${Array.from(this.extractedClasses).join(" ")}");`
+          );
+        }
       } else {
         this.log("\n🎨 No atomic classes found in build");
       }
