@@ -1,1 +1,2 @@
+git update-index --assume-unchanged packages/next-plugin/atomic-variants.css
 bun test
