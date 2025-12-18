@@ -1,7 +1,6 @@
 {
   "include-component-in-tag": true,
   "tag-separator": "@",
-  "separate-pull-requests": true,
   "packages": {
     "packages/core": {
       "release-type": "node",
