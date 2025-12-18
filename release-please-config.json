@@ -7,12 +7,6 @@
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "core",
-      "include-paths": [
-        "packages/core",
-        "packages/next-plugin",
-        "packages/webpack-plugin",
-        "packages/vite-plugin"
-      ],
       "extra-files": [
         {
           "type": "json",
@@ -32,12 +26,58 @@
           "jsonpath": "$.workspaces['packages/swc-plugin'].version"
         }
       ]
+    },
+    "packages/webpack-plugin": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "webpack-plugin",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/webpack-plugin'].version"
+        }
+      ]
+    },
+    "packages/next-plugin": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "next-plugin",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/next-plugin'].version"
+        }
+      ]
+    },
+    "packages/vite-plugin": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "extra-label": "vite-plugin",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "/bun.lock",
+          "jsonpath": "$.workspaces['packages/vite-plugin'].version"
+        }
+      ]
     }
   },
   "plugins": [
     {
       "type": "node-workspace",
       "updatePeerDependencies": true
+    },
+    {
+      "type": "linked-versions",
+      "groupName": "core-and-plugins",
+      "components": [
+        "packages/core",
+        "packages/webpack-plugin",
+        "packages/next-plugin",
+        "packages/vite-plugin"
+      ]
     }
   ],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
