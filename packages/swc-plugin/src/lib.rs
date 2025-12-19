@@ -234,6 +234,7 @@ test_inline!(
     r#"import { atomic } from "atomic-variants";
 
 const button = atomic({
+test
   base: "font-semibold",
   variants: {
     color: {
