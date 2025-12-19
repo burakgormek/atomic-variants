@@ -72,10 +72,10 @@
       "type": "linked-versions",
       "groupName": "core-and-plugins",
       "components": [
-        "packages/core",
-        "packages/webpack-plugin",
-        "packages/next-plugin",
-        "packages/vite-plugin"
+        "atomic-variants",
+        "@atomic-variants/webpack-plugin",
+        "@atomic-variants/next-plugin",
+        "@atomic-variants/vite-plugin"
       ]
     }
   ],
