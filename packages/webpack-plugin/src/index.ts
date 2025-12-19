@@ -40,6 +40,7 @@ export default class AtomicVariantsPlugin {
       }
     );
 
+    ("test");
     compiler.hooks.done.tap("AtomicVariantsPlugin", (stats) => {
       if (this.extractedClasses.size > 0) {
         this.log(
