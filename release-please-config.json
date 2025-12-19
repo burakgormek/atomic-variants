@@ -27,8 +27,6 @@
       ]
     },
     "packages/webpack-plugin": {
-      "skip-changelog": true,
-      "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "webpack-plugin",
       "extra-files": [
@@ -40,8 +38,6 @@
       ]
     },
     "packages/next-plugin": {
-      "skip-changelog": true,
-      "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "next-plugin",
       "extra-files": [
@@ -53,8 +49,6 @@
       ]
     },
     "packages/vite-plugin": {
-      "skip-changelog": true,
-      "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "vite-plugin",
       "extra-files": [
