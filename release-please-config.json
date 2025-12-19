@@ -6,6 +6,11 @@
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "core",
+      "include-paths": [
+        "packages/vite-plugin",
+        "packages/next-plugin",
+        "packages/webpack-plugin"
+      ],
       "extra-files": [
         "packages/next-plugin/package.json",
         "packages/vite-plugin/package.json",
