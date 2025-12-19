@@ -27,6 +27,7 @@
       ]
     },
     "packages/webpack-plugin": {
+      "skip-changelog": true,
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "webpack-plugin",
@@ -39,6 +40,7 @@
       ]
     },
     "packages/next-plugin": {
+      "skip-changelog": true,
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "next-plugin",
@@ -51,6 +53,7 @@
       ]
     },
     "packages/vite-plugin": {
+      "skip-changelog": true,
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "vite-plugin",
@@ -72,10 +75,10 @@
       "type": "linked-versions",
       "groupName": "core-and-plugins",
       "components": [
-        "atomic-variants",
-        "@atomic-variants/webpack-plugin",
-        "@atomic-variants/next-plugin",
-        "@atomic-variants/vite-plugin"
+        "packages/core",
+        "packages/webpack-plugin",
+        "packages/next-plugin",
+        "packages/vite-plugin"
       ]
     }
   ],
