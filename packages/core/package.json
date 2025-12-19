@@ -40,7 +40,6 @@
     "test": "bun test"
   },
   "devDependencies": {
-    "@atomic-variants/next-plugin": "workspace:*",
     "@types/bun": "latest",
     "@types/jest": "^30.0.0",
     "tailwind-merge": "^3.3.1",
