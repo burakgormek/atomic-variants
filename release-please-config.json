@@ -25,6 +25,7 @@
           "jsonpath": "$.workspaces['packages/swc-plugin'].version"
         }
       ]
+    }
   },
   "plugins": [
     {
