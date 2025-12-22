@@ -1,7 +1,6 @@
 {
   "include-component-in-tag": true,
   "tag-separator": "@",
-  "changelog-type": "github",
   "packages": {
     "packages/core": {
       "release-type": "node",
@@ -28,6 +27,7 @@
       ]
     },
     "packages/webpack-plugin": {
+      "skip-changelog": true,
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "webpack-plugin",
@@ -40,6 +40,7 @@
       ]
     },
     "packages/next-plugin": {
+      "skip-changelog": true,
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "next-plugin",
@@ -52,6 +53,7 @@
       ]
     },
     "packages/vite-plugin": {
+      "skip-changelog": true,
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "vite-plugin",
