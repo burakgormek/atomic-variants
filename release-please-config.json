@@ -1,6 +1,7 @@
 {
   "include-component-in-tag": true,
   "tag-separator": "@",
+  "changelog-type": "github",
   "packages": {
     "packages/core": {
       "release-type": "node",
