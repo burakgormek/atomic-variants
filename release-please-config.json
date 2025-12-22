@@ -2,7 +2,7 @@
   "include-component-in-tag": true,
   "tag-separator": "@",
   "packages": {
-    "packages/core": {
+    ".": {
       "release-type": "node",
       "bump-minor-pre-major": true,
       "extra-label": "core",
@@ -23,45 +23,6 @@
           "type": "json",
           "path": "/bun.lock",
           "jsonpath": "$.workspaces['packages/swc-plugin'].version"
-        }
-      ]
-    },
-    "packages/webpack-plugin": {
-      "skip-changelog": true,
-      "release-type": "node",
-      "bump-minor-pre-major": true,
-      "extra-label": "webpack-plugin",
-      "extra-files": [
-        {
-          "type": "json",
-          "path": "/bun.lock",
-          "jsonpath": "$.workspaces['packages/webpack-plugin'].version"
-        }
-      ]
-    },
-    "packages/next-plugin": {
-      "skip-changelog": true,
-      "release-type": "node",
-      "bump-minor-pre-major": true,
-      "extra-label": "next-plugin",
-      "extra-files": [
-        {
-          "type": "json",
-          "path": "/bun.lock",
-          "jsonpath": "$.workspaces['packages/next-plugin'].version"
-        }
-      ]
-    },
-    "packages/vite-plugin": {
-      "skip-changelog": true,
-      "release-type": "node",
-      "bump-minor-pre-major": true,
-      "extra-label": "vite-plugin",
-      "extra-files": [
-        {
-          "type": "json",
-          "path": "/bun.lock",
-          "jsonpath": "$.workspaces['packages/vite-plugin'].version"
         }
       ]
     }
