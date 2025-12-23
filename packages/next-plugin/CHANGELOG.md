@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.1.3...next-plugin@v0.2.0) (2025-12-23)
+
+
+### Features
+
+* **next-plugin:** add atomic-variants.css ([#32](https://github.com/burakgormek/atomic-variants/issues/32)) ([49f4b12](https://github.com/burakgormek/atomic-variants/commit/49f4b128acbc608c30cfdc181edfc512f8ccbcc8))
+
 ## [0.1.3](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.1.2...next-plugin@v0.1.3) (2025-10-29)
 
 
