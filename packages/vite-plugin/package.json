@@ -1,6 +1,6 @@
 {
   "name": "@atomic-variants/vite-plugin",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Vite plugin for atomic-variants to enable responsive, type-safe TailwindCSS variants at build time.",
   "keywords": [
     "atomic-variants",
