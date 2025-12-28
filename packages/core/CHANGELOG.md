@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.2...atomic-variants@v0.2.1) (2025-12-28)
+
+
+### Miscellaneous Chores
+
+* **webpack-plugin:** release 0.2.1 ([5c233c8](https://github.com/burakgormek/atomic-variants/commit/5c233c8a3a6b2d068849c140a16641ee63f2122c))
+
 ## [0.2.2](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.1...atomic-variants@v0.2.2) (2025-11-11)
 
 
