@@ -40,7 +40,7 @@
     "atomic-variants.css"
   ],
   "scripts": {
-    "build": "tsdown src/index.ts",
+    "build": "tsdown",
     "release": "bun publish --dry-run",
     "test": "bun test"
   },
