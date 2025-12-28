@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/burakgormek/atomic-variants/compare/webpack-plugin@v0.2.0...webpack-plugin@v0.2.1) (2025-12-28)
+
+
+### Bug Fixes
+
+* **webpack-plugin:** fix cjs build ([613be74](https://github.com/burakgormek/atomic-variants/commit/613be74be391eb02d11760da2f71d44427503d41))
+
 ## [0.2.0](https://github.com/burakgormek/atomic-variants/compare/webpack-plugin@v0.1.1...webpack-plugin@v0.2.0) (2025-12-13)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.2...atomic-variants@v0.2.3) (2025-12-28)
+
+
+### Bug Fixes
+
+* **webpack-plugin:** fix cjs build ([613be74](https://github.com/burakgormek/atomic-variants/commit/613be74be391eb02d11760da2f71d44427503d41))
+
 ## [0.2.2](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.1...atomic-variants@v0.2.2) (2025-11-11)
 
 
