@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.1](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.2.0...next-plugin@v0.2.1) (2025-12-28)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @atomic-variants/webpack-plugin bumped to 0.2.1
+
 ## [0.2.0](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.1.3...next-plugin@v0.2.0) (2025-12-26)
 
 

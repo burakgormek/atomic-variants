@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/burakgormek/atomic-variants/compare/webpack-plugin@v0.2.0...webpack-plugin@v0.2.1) (2025-12-28)
+
+
+### Bug Fixes
+
+* **webpack-plugin:** use build entry ([9850014](https://github.com/burakgormek/atomic-variants/commit/985001439a3f5547c84e7f0184ea156917344540))
+
 ## [0.2.0](https://github.com/burakgormek/atomic-variants/compare/webpack-plugin@v0.1.1...webpack-plugin@v0.2.0) (2025-12-13)
 
 
