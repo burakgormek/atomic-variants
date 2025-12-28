@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.1](https://github.com/burakgormek/atomic-variants/compare/vite-plugin@v0.2.0...vite-plugin@v0.2.1) (2025-12-28)
+
+
+### Miscellaneous Chores
+
+* **webpack-plugin:** release ([1e5e542](https://github.com/burakgormek/atomic-variants/commit/1e5e5422cdf39611d5cfaf8a4f0166f9ebf5280e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @atomic-variants/swc-plugin bumped to 0.2.1
+
 ## [0.2.0](https://github.com/burakgormek/atomic-variants/compare/vite-plugin@v0.1.1...vite-plugin@v0.2.0) (2025-12-26)
 
 
