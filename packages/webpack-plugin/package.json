@@ -37,7 +37,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown src/index.ts",
+    "build": "tsdown",
     "release": "bun publish",
     "test": "bun test"
   },
