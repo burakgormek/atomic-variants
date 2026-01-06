@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.2.1...next-plugin@v0.2.2) (2026-01-06)
+
+
+### Bug Fixes
+
+* **next-plugin:** support esm&cjs file resolve ([a490f38](https://github.com/burakgormek/atomic-variants/commit/a490f384114047d891e6781b46a41b43449a337a))
+
 ## [0.2.1](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.2.0...next-plugin@v0.2.1) (2025-12-28)
 
 
