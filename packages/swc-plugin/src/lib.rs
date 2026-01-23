@@ -21,7 +21,6 @@ impl VisitMut for AtomicVariantsCollector {
                         if let Expr::Object(obj) = &**arg {
                             let mut responsive_variants: Option<Vec<String>> = None;
                             let mut responsive_sizes = vec![
-                                "xs".to_string(),
                                 "sm".to_string(),
                                 "md".to_string(),
                                 "lg".to_string(),
