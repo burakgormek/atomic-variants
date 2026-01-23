@@ -1,5 +1,6 @@
 use indexmap::IndexMap;
 use serde_json::Value;
+use std::collections::HashSet;
 use swc_core::common::DUMMY_SP;
 use swc_core::ecma::ast::Pass;
 use swc_core::ecma::ast::*;
@@ -8,7 +9,7 @@ use swc_core::ecma::visit::{VisitMut, VisitMutWith};
 use swc_core::plugin::{plugin_transform, proxies::TransformPluginProgramMetadata};
 
 struct AtomicVariantsCollector {
-    comments: Vec<ModuleItem>,
+    collected_classes: HashSet<String>,
     tag: String,
 }
 
@@ -74,39 +75,30 @@ impl VisitMut for AtomicVariantsCollector {
                                                         }
                                                     }
                                                 }
-                                                "responsiveVariants" => {
-                                                    match &*kv.value {
-                                                        Expr::Array(arr) => {
-                                                            let mut props = vec![];
-                                                            for elem in &arr.elems {
-                                                                if let Some(ExprOrSpread {
-                                                                    expr,
-                                                                    ..
-                                                                }) = elem
+                                                "responsiveVariants" => match &*kv.value {
+                                                    Expr::Array(arr) => {
+                                                        let mut props = vec![];
+                                                        for elem in &arr.elems {
+                                                            if let Some(ExprOrSpread {
+                                                                expr, ..
+                                                            }) = elem
+                                                            {
+                                                                if let Expr::Lit(Lit::Str(s)) =
+                                                                    &**expr
                                                                 {
-                                                                    if let Expr::Lit(Lit::Str(s)) =
-                                                                        &**expr
-                                                                    {
-                                                                        props.push(
-                                                                            s.value.to_string(),
-                                                                        );
-                                                                    }
+                                                                    props.push(s.value.to_string());
                                                                 }
                                                             }
-                                                            responsive_variants = Some(props);
                                                         }
-                                                        Expr::Lit(Lit::Bool(b)) if b.value => {
-                                                            // true means all variants
-                                                            responsive_variants = Some(
-                                                                variant_map
-                                                                    .keys()
-                                                                    .cloned()
-                                                                    .collect(),
-                                                            );
-                                                        }
-                                                        _ => {}
+                                                        responsive_variants = Some(props);
                                                     }
-                                                }
+                                                    Expr::Lit(Lit::Bool(b)) if b.value => {
+                                                        responsive_variants = Some(
+                                                            variant_map.keys().cloned().collect(),
+                                                        );
+                                                    }
+                                                    _ => {}
+                                                },
                                                 "responsiveSizes" => {
                                                     if let Expr::Array(arr) = &*kv.value {
                                                         let mut sizes = vec![];
@@ -132,34 +124,17 @@ impl VisitMut for AtomicVariantsCollector {
                                 }
                             }
 
-                            let mut collected = vec![];
                             if let Some(props) = responsive_variants {
                                 for p in props {
                                     if let Some(vals) = variant_map.get(&p) {
-                                        collected.extend(vals.clone());
+                                        for prefix in &responsive_sizes {
+                                            for class in vals {
+                                                self.collected_classes
+                                                    .insert(format!("{}:{}", prefix, class));
+                                            }
+                                        }
                                     }
                                 }
-                            }
-
-                            let mut prefixed = vec![];
-                            for prefix in responsive_sizes {
-                                for class in &collected {
-                                    prefixed.push(format!("{}:{}", prefix, class));
-                                }
-                            }
-
-                            if !prefixed.is_empty() {
-                                let classes = prefixed.join(" ");
-                                let comment_stmt = Stmt::Expr(ExprStmt {
-                                    span: DUMMY_SP,
-                                    expr: Box::new(Expr::Lit(Lit::Str(Str {
-                                        span: DUMMY_SP,
-                                        value: format!("/* {}:{} */", self.tag, classes).into(),
-                                        raw: None,
-                                    }))),
-                                });
-
-                                self.comments.push(ModuleItem::Stmt(comment_stmt));
                             }
                         }
                     }
@@ -173,14 +148,27 @@ impl AtomicVariantsCollector {
     fn apply_to_module(&mut self, module: &mut Module) {
         module.visit_mut_with(self);
 
-        let insert_index = module
-            .body
-            .iter()
-            .position(|item| !matches!(item, ModuleItem::ModuleDecl(ModuleDecl::Import(_))))
-            .unwrap_or(module.body.len());
+        if !self.collected_classes.is_empty() {
+            let mut sorted_classes: Vec<_> = self.collected_classes.iter().cloned().collect();
+            sorted_classes.sort();
+            let classes = sorted_classes.join(" ");
 
-        for comment in self.comments.drain(..).rev() {
-            module.body.insert(insert_index, comment);
+            let comment_stmt = ModuleItem::Stmt(Stmt::Expr(ExprStmt {
+                span: DUMMY_SP,
+                expr: Box::new(Expr::Lit(Lit::Str(Str {
+                    span: DUMMY_SP,
+                    value: format!("/* {}:{} */", self.tag, classes).into(),
+                    raw: None,
+                }))),
+            }));
+
+            let insert_index = module
+                .body
+                .iter()
+                .position(|item| !matches!(item, ModuleItem::ModuleDecl(ModuleDecl::Import(_))))
+                .unwrap_or(0);
+
+            module.body.insert(insert_index, comment_stmt);
         }
     }
 }
@@ -195,9 +183,7 @@ impl Pass for AtomicVariantsCollector {
 
 #[plugin_transform]
 pub fn process(mut program: Program, metadata: TransformPluginProgramMetadata) -> Program {
-    // default name
     let mut tag = "__atomic_generated".to_string();
-
     if let Some(config_json) = metadata.get_transform_plugin_config() {
         if let Ok(config) = serde_json::from_str::<Value>(&config_json) {
             if let Some(custom_tag) = config.get("tag").and_then(|v| v.as_str()) {
@@ -207,16 +193,11 @@ pub fn process(mut program: Program, metadata: TransformPluginProgramMetadata) -
     }
 
     if let Program::Module(ref mut module) = program {
-        let mut collector: AtomicVariantsCollector = AtomicVariantsCollector {
-            comments: vec![],
+        let mut collector = AtomicVariantsCollector {
+            collected_classes: HashSet::new(),
             tag,
         };
-
-        module.visit_mut_with(&mut collector);
-
-        for comment in collector.comments.into_iter().rev() {
-            module.body.insert(0, comment);
-        }
+        collector.apply_to_module(module);
     }
 
     program
@@ -225,11 +206,10 @@ pub fn process(mut program: Program, metadata: TransformPluginProgramMetadata) -
 test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
-        comments: vec![],
+        collected_classes: HashSet::new(),
         tag: "__atomic_generated".to_string()
     },
     default,
-    // Input codes
     r#"import { atomic } from "atomic-variants";
 
 const button = atomic({
@@ -244,9 +224,8 @@ const button = atomic({
   },
   responsiveVariants: ["color"],
 });"#,
-    // Output codes after transformed with plugin
     r#"import { atomic } from "atomic-variants";
-"/* __atomic_generated:xs:bg-blue-500 sm:bg-blue-500 md:bg-blue-500 lg:bg-blue-500 xl:bg-blue-500 2xl:bg-blue-500 */"
+"/* __atomic_generated:2xl:bg-blue-500 lg:bg-blue-500 md:bg-blue-500 sm:bg-blue-500 xl:bg-blue-500 */"
 const button = atomic({
   base: "font-semibold",
   variants: {
@@ -264,7 +243,7 @@ const button = atomic({
 test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
-        comments: vec![],
+        collected_classes: HashSet::new(),
         tag: "__atomic_generated".to_string()
     },
     all_variants_true,
@@ -284,7 +263,7 @@ const box = atomic({
   responsiveVariants: true
 });"#,
     r#"import { atomic } from "atomic-variants";
-"/* __atomic_generated:xs:bg-green-500 xs:bg-red-500 xs:p-2 xs:p-8 sm:bg-green-500 sm:bg-red-500 sm:p-2 sm:p-8 md:bg-green-500 md:bg-red-500 md:p-2 md:p-8 lg:bg-green-500 lg:bg-red-500 lg:p-2 lg:p-8 xl:bg-green-500 xl:bg-red-500 xl:p-2 xl:p-8 2xl:bg-green-500 2xl:bg-red-500 2xl:p-2 2xl:p-8 */"
+"/* __atomic_generated:2xl:bg-green-500 2xl:bg-red-500 2xl:p-2 2xl:p-8 lg:bg-green-500 lg:bg-red-500 lg:p-2 lg:p-8 md:bg-green-500 md:bg-red-500 md:p-2 md:p-8 sm:bg-green-500 sm:bg-red-500 sm:p-2 sm:p-8 xl:bg-green-500 xl:bg-red-500 xl:p-2 xl:p-8 */"
 const box = atomic({
   variants: {
     color: {
@@ -303,7 +282,7 @@ const box = atomic({
 test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
-        comments: vec![],
+        collected_classes: HashSet::new(),
         tag: "__atomic_generated".to_string()
     },
     custom_responsive_sizes,
@@ -319,7 +298,7 @@ const btn = atomic({
   responsiveSizes: ["sm", "md"]
 });"#,
     r#"import { atomic } from "atomic-variants";
-"/* __atomic_generated:sm:bg-blue-600 md:bg-blue-600 */"
+"/* __atomic_generated:md:bg-blue-600 sm:bg-blue-600 */"
 const btn = atomic({
   variants: {
     color: {
@@ -334,7 +313,7 @@ const btn = atomic({
 test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
-        comments: vec![],
+        collected_classes: HashSet::new(),
         tag: "__atomic_generated".to_string()
     },
     multiple_variants,
@@ -354,7 +333,7 @@ const input = atomic({
   responsiveVariants: ["color", "border"]
 });"#,
     r#"import { atomic } from "atomic-variants";
-"/* __atomic_generated:xs:bg-red-600 xs:bg-green-600 xs:border xs:border-4 sm:bg-red-600 sm:bg-green-600 sm:border sm:border-4 md:bg-red-600 md:bg-green-600 md:border md:border-4 lg:bg-red-600 lg:bg-green-600 lg:border lg:border-4 xl:bg-red-600 xl:bg-green-600 xl:border xl:border-4 2xl:bg-red-600 2xl:bg-green-600 2xl:border 2xl:border-4 */"
+"/* __atomic_generated:2xl:bg-green-600 2xl:bg-red-600 2xl:border 2xl:border-4 lg:bg-green-600 lg:bg-red-600 lg:border lg:border-4 md:bg-green-600 md:bg-red-600 md:border md:border-4 sm:bg-green-600 sm:bg-red-600 sm:border sm:border-4 xl:bg-green-600 xl:bg-red-600 xl:border xl:border-4 */"
 const input = atomic({
   variants: {
     color: {
@@ -373,7 +352,7 @@ const input = atomic({
 test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
-        comments: vec![],
+        collected_classes: HashSet::new(),
         tag: "__atomic_generated".to_string()
     },
     no_responsive_variants,
@@ -403,47 +382,30 @@ const card = atomic({
 test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
-        comments: vec![],
+        collected_classes: HashSet::new(),
         tag: "__atomic_generated".to_string()
     },
-    nested_calls,
+    merged_nested_calls,
     r#"import { atomic } from "atomic-variants";
 
 const one = atomic({
-  variants: {
-    tone: {
-      warm: "bg-orange-300"
-    }
-  },
+  variants: { tone: { warm: "bg-orange-300" } },
   responsiveVariants: ["tone"]
 });
 
 const two = atomic({
-  variants: {
-    tone: {
-      cool: "bg-blue-300"
-    }
-  },
+  variants: { tone: { cool: "bg-blue-300" } },
   responsiveVariants: ["tone"]
 });"#,
     r#"import { atomic } from "atomic-variants";
-"/* __atomic_generated:xs:bg-orange-300 sm:bg-orange-300 md:bg-orange-300 lg:bg-orange-300 xl:bg-orange-300 2xl:bg-orange-300 */"
-"/* __atomic_generated:xs:bg-blue-300 sm:bg-blue-300 md:bg-blue-300 lg:bg-blue-300 xl:bg-blue-300 2xl:bg-blue-300 */"
+"/* __atomic_generated:2xl:bg-blue-300 2xl:bg-orange-300 lg:bg-blue-300 lg:bg-orange-300 md:bg-blue-300 md:bg-orange-300 sm:bg-blue-300 sm:bg-orange-300 xl:bg-blue-300 xl:bg-orange-300 */"
 const one = atomic({
-  variants: {
-    tone: {
-      warm: "bg-orange-300"
-    }
-  },
+  variants: { tone: { warm: "bg-orange-300" } },
   responsiveVariants: ["tone"]
 });
 
 const two = atomic({
-  variants: {
-    tone: {
-      cool: "bg-blue-300"
-    }
-  },
+  variants: { tone: { cool: "bg-blue-300" } },
   responsiveVariants: ["tone"]
 });"#
 );
