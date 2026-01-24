@@ -1,5 +1,5 @@
 use indexmap::IndexMap;
-use serde_json::Value;
+use serde::Deserialize;
 use std::collections::HashSet;
 use swc_core::common::DUMMY_SP;
 use swc_core::ecma::ast::Pass;
@@ -8,9 +8,32 @@ use swc_core::ecma::transforms::testing::test_inline;
 use swc_core::ecma::visit::{VisitMut, VisitMutWith};
 use swc_core::plugin::{plugin_transform, proxies::TransformPluginProgramMetadata};
 
+#[derive(Deserialize)]
+struct Config {
+    #[serde(default = "default_tag")]
+    tag: String,
+    #[serde(rename = "breakpoints", default = "default_breakpoints")]
+    breakpoints: Vec<String>,
+}
+
+fn default_tag() -> String {
+    "__atomic_generated".to_string()
+}
+
+fn default_breakpoints() -> Vec<String> {
+    vec![
+        "sm".to_string(),
+        "md".to_string(),
+        "lg".to_string(),
+        "xl".to_string(),
+        "2xl".to_string(),
+    ]
+}
+
 struct AtomicVariantsCollector {
     collected_classes: HashSet<String>,
     tag: String,
+    breakpoints: Vec<String>,
 }
 
 impl VisitMut for AtomicVariantsCollector {
@@ -21,13 +44,7 @@ impl VisitMut for AtomicVariantsCollector {
                     if let Some(ExprOrSpread { expr: arg, .. }) = call.args.first() {
                         if let Expr::Object(obj) = &**arg {
                             let mut responsive_variants: Option<Vec<String>> = None;
-                            let mut responsive_sizes = vec![
-                                "sm".to_string(),
-                                "md".to_string(),
-                                "lg".to_string(),
-                                "xl".to_string(),
-                                "2xl".to_string(),
-                            ];
+                            let mut breakpoints = self.breakpoints.clone();
                             let mut variant_map: IndexMap<String, Vec<String>> = IndexMap::new();
 
                             for prop in &obj.props {
@@ -114,7 +131,7 @@ impl VisitMut for AtomicVariantsCollector {
                                                                 }
                                                             }
                                                         }
-                                                        responsive_sizes = sizes;
+                                                        breakpoints = sizes;
                                                     }
                                                 }
                                                 _ => {}
@@ -127,7 +144,7 @@ impl VisitMut for AtomicVariantsCollector {
                             if let Some(props) = responsive_variants {
                                 for p in props {
                                     if let Some(vals) = variant_map.get(&p) {
-                                        for prefix in &responsive_sizes {
+                                        for prefix in &breakpoints {
                                             for class in vals {
                                                 self.collected_classes
                                                     .insert(format!("{}:{}", prefix, class));
@@ -183,19 +200,19 @@ impl Pass for AtomicVariantsCollector {
 
 #[plugin_transform]
 pub fn process(mut program: Program, metadata: TransformPluginProgramMetadata) -> Program {
-    let mut tag = "__atomic_generated".to_string();
-    if let Some(config_json) = metadata.get_transform_plugin_config() {
-        if let Ok(config) = serde_json::from_str::<Value>(&config_json) {
-            if let Some(custom_tag) = config.get("tag").and_then(|v| v.as_str()) {
-                tag = custom_tag.to_string();
-            }
-        }
-    }
+    let config_str = metadata
+        .get_transform_plugin_config()
+        .unwrap_or_else(|| "{}".to_string());
+    let config: Config = serde_json::from_str(&config_str).unwrap_or_else(|_| Config {
+        tag: default_tag(),
+        breakpoints: default_breakpoints(),
+    });
 
     if let Program::Module(ref mut module) = program {
         let mut collector = AtomicVariantsCollector {
             collected_classes: HashSet::new(),
-            tag,
+            tag: config.tag,
+            breakpoints: config.breakpoints,
         };
         collector.apply_to_module(module);
     }
@@ -207,7 +224,8 @@ test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
         collected_classes: HashSet::new(),
-        tag: "__atomic_generated".to_string()
+        tag: "__atomic_generated".to_string(),
+        breakpoints: default_breakpoints()
     },
     default,
     r#"import { atomic } from "atomic-variants";
@@ -244,7 +262,8 @@ test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
         collected_classes: HashSet::new(),
-        tag: "__atomic_generated".to_string()
+        tag: "__atomic_generated".to_string(),
+        breakpoints: default_breakpoints()
     },
     all_variants_true,
     r#"import { atomic } from "atomic-variants";
@@ -283,9 +302,10 @@ test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
         collected_classes: HashSet::new(),
-        tag: "__atomic_generated".to_string()
+        tag: "__atomic_generated".to_string(),
+        breakpoints: default_breakpoints()
     },
-    custom_responsive_sizes,
+    custom_breakpoints,
     r#"import { atomic } from "atomic-variants";
 
 const btn = atomic({
@@ -314,7 +334,8 @@ test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
         collected_classes: HashSet::new(),
-        tag: "__atomic_generated".to_string()
+        tag: "__atomic_generated".to_string(),
+        breakpoints: default_breakpoints()
     },
     multiple_variants,
     r#"import { atomic } from "atomic-variants";
@@ -353,7 +374,8 @@ test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
         collected_classes: HashSet::new(),
-        tag: "__atomic_generated".to_string()
+        tag: "__atomic_generated".to_string(),
+        breakpoints: default_breakpoints()
     },
     no_responsive_variants,
     r#"import { atomic } from "atomic-variants";
@@ -383,7 +405,8 @@ test_inline!(
     Default::default(),
     |_| AtomicVariantsCollector {
         collected_classes: HashSet::new(),
-        tag: "__atomic_generated".to_string()
+        tag: "__atomic_generated".to_string(),
+        breakpoints: default_breakpoints()
     },
     merged_nested_calls,
     r#"import { atomic } from "atomic-variants";
