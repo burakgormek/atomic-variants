@@ -8,7 +8,15 @@ import { createRequire } from "module";
 
 const resolve = createRequire(import.meta.url).resolve;
 
-export default function atomicVariants(): Plugin {
+interface Options {
+  breakpoints?: string[];
+}
+
+export default function atomicVariants(
+  options: Options = {
+    breakpoints: ["sm", "md", "lg", "xl", "2xl"],
+  },
+): Plugin {
   const extracted = new Set<string>();
   let viteCacheRoot: string;
 
@@ -23,6 +31,11 @@ export default function atomicVariants(): Plugin {
       const isTS = id.endsWith(".ts") || id.endsWith(".tsx");
       const isTSX = id.endsWith(".tsx");
 
+      const swcOptions = {
+        tag: ATOMIC_TAG,
+        breakpoints: options.breakpoints,
+      };
+
       const result = await transform(code, {
         filename: id,
         swcrc: false,
@@ -35,9 +48,7 @@ export default function atomicVariants(): Plugin {
           },
           target: "es2022",
           experimental: {
-            plugins: [
-              [resolve("@atomic-variants/swc-plugin"), { tag: ATOMIC_TAG }],
-            ],
+            plugins: [[resolve("@atomic-variants/swc-plugin"), swcOptions]],
             cacheRoot: path.join(viteCacheRoot ?? "node_modules/.vite", ".swc"),
           },
         },
@@ -66,7 +77,7 @@ const writeExtractedClasses = (extracted: Set<string>) => {
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
     fs.writeFileSync(
       path.resolve(__dirname, "../atomic-variants.css"),
-      `@source inline("${Array.from(extracted).join(" ")}");`
+      `@source inline("${Array.from(extracted).join(" ")}");`,
     );
   }
 };
