@@ -1,19 +1,5 @@
 # Changelog
 
-## [0.3.0](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.2.2...next-plugin@v0.3.0) (2026-01-25)
-
-
-### Features
-
-* **next-plugin:** customizable breakpoints ([44802dc](https://github.com/burakgormek/atomic-variants/commit/44802dc1b7de2ca22336f6f6bcc2ccdabdbe8be4))
-
-
-### Dependencies
-
-* The following workspace dependencies were updated
-  * dependencies
-    * @atomic-variants/swc-plugin bumped to 0.2.0
-
 ## [0.2.2](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.2.1...next-plugin@v0.2.2) (2026-01-06)
 
 
