@@ -25,10 +25,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-      - name: Debug outputs
-        run: |
-          echo "releases_created = ${{ steps.release.outputs.releases_created }}"
-          echo "paths_released = ${{ steps.release.outputs.paths_released }}"
 
   publish:
     name: Publish
@@ -43,11 +39,47 @@ jobs:
         working-directory: ${{ matrix.package }}
     steps:
       - uses: actions/checkout@v5
+      - name: Detect already published version
+        id: npm_check
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "already_published=true" >> $GITHUB_OUTPUT
+          else
+            echo "already_published=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop job if already published
+        if: steps.npm_check.outputs.already_published == 'true'
+        run: |
+          echo "Version already published, skipping publish job."
+          exit 0
+
+      - name: Check for Rust Code
+        id: check_rust
+        run: |
+          if [ -f "Cargo.toml" ]; then
+            echo "has_rust=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_rust=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install Rust (WASM Target)
+        if: steps.check_rust.outputs.has_rust == 'true'
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+
       - uses: oven-sh/setup-bun@v2
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
       - name: Build package
         run: bun run build
+
       - name: Publish package to npm
         run: |
           TARBALL=$(bun pm pack --quiet)
