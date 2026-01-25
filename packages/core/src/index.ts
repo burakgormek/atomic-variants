@@ -14,17 +14,23 @@ type ConvertBoolean<T> = T extends "true" | "false" ? boolean : T;
 type HasRequiredKeys<T> = T extends true
   ? true
   : KeysOf<T> extends never
-  ? false
-  : true;
+    ? false
+    : true;
 type ConditionalArgs<Condition extends boolean, Args> = Condition extends true
   ? [Args]
   : [Args?];
 
-type BreakPoints = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export interface AtomicBreakpoints {}
+
+type DefaultBreakpoints = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+
+export type BreakPoints = keyof AtomicBreakpoints extends never
+  ? DefaultBreakpoints
+  : keyof AtomicBreakpoints;
 
 type VariantObject<
   Variant,
-  ResponsiveVariants extends true | Array<keyof Variant>
+  ResponsiveVariants extends true | Array<keyof Variant>,
 > = {
   [K in keyof Variant]: VariantValues<K, Variant, ResponsiveVariants>;
 };
@@ -32,21 +38,21 @@ type VariantObject<
 type VariantValues<
   K extends keyof Variant,
   Variant,
-  ResponsiveVariants extends true | Array<keyof Variant>
+  ResponsiveVariants extends true | Array<keyof Variant>,
 > =
   | ConvertBoolean<keyof Variant[K]>
   | (ResponsiveVariants extends true
       ? Partial<Record<BreakPoints, ConvertBoolean<keyof Variant[K]>>>
       : ResponsiveVariants extends Array<keyof Variant>
-      ? Extract<K, ResponsiveVariants[number]> extends never
-        ? undefined
-        : Partial<Record<BreakPoints, ConvertBoolean<keyof Variant[K]>>>
-      : undefined);
+        ? Extract<K, ResponsiveVariants[number]> extends never
+          ? undefined
+          : Partial<Record<BreakPoints, ConvertBoolean<keyof Variant[K]>>>
+        : undefined);
 
 type VariantParams<
   Variant,
   ResponsiveVariants extends true | Array<keyof Variant>,
-  RequiredVariants extends true | Array<keyof Variant>
+  RequiredVariants extends true | Array<keyof Variant>,
 > = ClassNameProps &
   (RequiredVariants extends true
     ? Required<VariantObject<Variant, ResponsiveVariants>>
@@ -58,14 +64,18 @@ type VariantParams<
           >
         >);
 
-export let config = {
+export let config: {
+  finalize: (result: string) => string;
+  baseBreakpoint: string;
+} = {
   finalize: (result: string) => result,
+  baseBreakpoint: "xs",
 };
 
 export function atomic<
   Variants extends Record<string, Record<string, string>>,
   ResponsiveVariants extends true | Array<keyof Variants> = [],
-  RequiredVariants extends true | Array<keyof Variants> = []
+  RequiredVariants extends true | Array<keyof Variants> = [],
 >({
   base = "",
   override,
@@ -122,9 +132,9 @@ export function atomic<
       if (typeof variant == "object" && isResponsiveVariant) {
         for (const [size, resVariant] of Object.entries(variant) as [
           BreakPoints,
-          string
+          string,
         ][]) {
-          if (size == "xs") {
+          if (size == config.baseBreakpoint) {
             classes.push(variants[key][resVariant]!);
           } else {
             const parts = variants[key][resVariant]!.split(" ");
