@@ -4,6 +4,7 @@ on:
       - main
 
 permissions:
+  id-token: write
   contents: write
   issues: write
   pull-requests: write
@@ -48,6 +49,6 @@ jobs:
       - name: Build package
         run: bun run build
       - name: Publish package to npm
-        run: bun publish --access public
-        env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          TARBALL=$(bun pm pack --quiet)
+          npm publish "$TARBALL" --provenance
