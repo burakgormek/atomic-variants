@@ -209,6 +209,75 @@ variants({ padding: { xs: "small", md: "large" } });
 
 > To use **responsive variants**, install the optional plugins for your framework. These plugins ensure Tailwind includes generated responsive classes during compilation.
 
+### Customizable Breakpoints
+
+By default, Atomic Variants uses Tailwind's standard breakpoints: `sm`, `md`, `lg`, `xl`, and `2xl`. You can customize these by passing a `breakpoints` array to the plugin options.
+
+<details>
+<summary>Next.js</summary>
+
+```ts
+import type { NextConfig } from "next";
+import withAtomicVariants from "@atomic-variants/next-plugin";
+
+const nextConfig: NextConfig = {
+  /* ... */
+};
+
+// Pass custom breakpoints to the plugin
+export default withAtomicVariants(nextConfig, {
+  breakpoints: ["tablet", "desktop", "wide"],
+});
+```
+
+</details>
+
+<details>
+<summary>Vite</summary>
+
+```ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import tailwindcss from "@tailwindcss/vite";
+import atomicVariants from "@atomic-variants/vite-plugin";
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+    atomicVariants({
+      breakpoints: ["tablet", "desktop", "wide"],
+    }),
+  ],
+});
+```
+
+</details>
+
+Ideally, you should configure the base breakpoint globally using the default config. The base breakpoint determines which breakpoint value is applied without a media query prefix (default: "xs"). For example, setting it to "mobile" makes classes for that breakpoint apply without the `mobile:` prefix:
+
+```js
+import { defaultConfig } from "atomic-variants";
+
+defaultConfig.baseBreakpoint = "mobile";
+```
+
+To make TypeScript aware of your custom breakpoints, you can override the `AtomicBreakpoints` interface using module augmentation. Create a `*.d.ts` file in your project and add the following:
+
+```ts
+// atomic-variants.d.ts
+declare module "atomic-variants" {
+  export interface AtomicBreakpoints {
+    tablet: true;
+    desktop: true;
+    wide: true;
+  }
+}
+```
+
+This ensures type-safety when using responsive variants with your custom breakpoints.
+
 ## Acknowledgements
 
 [cva](https://github.com/joe-bell/cva) [tailwind-variants](https://github.com/heroui-inc/tailwind-variants)
