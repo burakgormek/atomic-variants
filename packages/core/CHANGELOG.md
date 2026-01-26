@@ -1,12 +1,5 @@
 # Changelog
 
-## [0.3.0](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.2...atomic-variants@v0.3.0) (2026-01-25)
-
-
-### Features
-
-* **core:** add customizable breakpoints ([2660a8e](https://github.com/burakgormek/atomic-variants/commit/2660a8eb1ea3c0a8ae4b2695129696ab6373f4b8))
-
 ## [0.2.2](https://github.com/burakgormek/atomic-variants/compare/atomic-variants@v0.2.1...atomic-variants@v0.2.2) (2025-11-11)
 
 
