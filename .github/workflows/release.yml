@@ -39,8 +39,11 @@ jobs:
         working-directory: ${{ matrix.package }}
     steps:
       - uses: actions/checkout@v5
-      - name: Detect already published version
-        id: npm_check
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+      - id: npm_check
         run: |
           NAME=$(node -p "require('./package.json').name")
           VERSION=$(node -p "require('./package.json').version")
@@ -51,14 +54,9 @@ jobs:
             echo "already_published=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Stop job if already published
-        if: steps.npm_check.outputs.already_published == 'true'
-        run: |
-          echo "Version already published, skipping publish job."
-          exit 0
-
       - name: Check for Rust Code
         id: check_rust
+        if: steps.npm_check.outputs.already_published != 'true'
         run: |
           if [ -f "Cargo.toml" ]; then
             echo "has_rust=true" >> $GITHUB_OUTPUT
@@ -67,7 +65,7 @@ jobs:
           fi
 
       - name: Install Rust (WASM Target)
-        if: steps.check_rust.outputs.has_rust == 'true'
+        if: steps.check_rust.outputs.has_rust == 'true' && steps.npm_check.outputs.already_published != 'true'
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-wasip1
@@ -75,12 +73,15 @@ jobs:
       - uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
+        if: steps.npm_check.outputs.already_published != 'true'
         run: bun install --frozen-lockfile
 
       - name: Build package
+        if: steps.npm_check.outputs.already_published != 'true'
         run: bun run build
 
-      - name: Publish package to npm
+      - name: Publish package
+        if: steps.npm_check.outputs.already_published != 'true'
         run: |
-          TARBALL=$(bun pm pack --quiet)
-          npm publish "$TARBALL" --provenance
+          bun pm pack
+          npm publish *.tgz
