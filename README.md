@@ -128,10 +128,10 @@ bun add @tailwind-merge
 After installing, configure it globally using the default config:
 
 ```js
-import { defaultConfig } from "atomic-variants";
+import { config } from "atomic-variants";
 import { twMerge } from "tailwind-merge";
 
-defaultConfig.finalize = twMerge;
+config.finalize = twMerge;
 ```
 
 This ensures automatic conflict resolution for Tailwind CSS classes in the final result.
@@ -258,9 +258,9 @@ export default defineConfig({
 Ideally, you should configure the base breakpoint globally using the default config. The base breakpoint determines which breakpoint value is applied without a media query prefix (default: "xs"). For example, setting it to "mobile" makes classes for that breakpoint apply without the `mobile:` prefix:
 
 ```js
-import { defaultConfig } from "atomic-variants";
+import { config } from "atomic-variants";
 
-defaultConfig.baseBreakpoint = "mobile";
+config.baseBreakpoint = "mobile";
 ```
 
 To make TypeScript aware of your custom breakpoints, you can override the `AtomicBreakpoints` interface using module augmentation. Create a `*.d.ts` file in your project and add the following:
