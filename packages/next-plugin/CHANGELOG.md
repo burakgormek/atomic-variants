@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.1](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.3.0...next-plugin@v0.3.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* **core:** bump ([c2beae4](https://github.com/burakgormek/atomic-variants/commit/c2beae49cd1a2e8cc08bb1666476f7349228666e))
+* **next-plugin:** bump ([fa2355f](https://github.com/burakgormek/atomic-variants/commit/fa2355f2b88940016b987689f4ff849d3057cb8e))
+* **swc-plugin:** bump ([179efef](https://github.com/burakgormek/atomic-variants/commit/179efef65fe78fe3292bcb15a0240c00b691604f))
+* **vite-plugin:** bump ([d625c30](https://github.com/burakgormek/atomic-variants/commit/d625c303dd8d564004af1aca1b77ca8e57e2347f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @atomic-variants/swc-plugin bumped to 0.2.1
+    * @atomic-variants/webpack-plugin bumped to 0.2.2
+
 ## [0.3.0](https://github.com/burakgormek/atomic-variants/compare/next-plugin@v0.2.2...next-plugin@v0.3.0) (2026-01-26)
 
 
