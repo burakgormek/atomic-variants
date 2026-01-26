@@ -10,6 +10,10 @@
     "responsive",
     "variants"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/burakgormek/atomic-variants"
+  },
   "license": "MIT",
   "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
   "main": "swc_plugin_atomic_variants.wasm",
