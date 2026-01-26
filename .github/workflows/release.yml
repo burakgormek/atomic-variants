@@ -64,11 +64,9 @@ jobs:
             echo "has_rust=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Install Rust (WASM Target)
+      - name: Install WASI target
         if: steps.check_rust.outputs.has_rust == 'true' && steps.npm_check.outputs.already_published != 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: wasm32-wasip1
+        run: rustup target add wasm32-wasip1
 
       - uses: oven-sh/setup-bun@v2
 
