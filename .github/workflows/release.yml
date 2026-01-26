@@ -81,5 +81,5 @@ jobs:
       - name: Publish package
         if: steps.npm_check.outputs.already_published != 'true'
         run: |
-          bun pm pack --filename package.tgz
+          bun pm pack --filename $PWD/package.tgz
           npm publish package.tgz
