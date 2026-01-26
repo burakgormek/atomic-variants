@@ -1,19 +1,5 @@
 # Changelog
 
-## [0.3.0](https://github.com/burakgormek/atomic-variants/compare/vite-plugin@v0.2.0...vite-plugin@v0.3.0) (2026-01-26)
-
-
-### Features
-
-* **vite-plugin:** customizable breakpoints ([e082419](https://github.com/burakgormek/atomic-variants/commit/e08241904b9322b2ccff92fecdf2b08fe7582b36))
-
-
-### Dependencies
-
-* The following workspace dependencies were updated
-  * dependencies
-    * @atomic-variants/swc-plugin bumped to 0.2.0
-
 ## [0.2.0](https://github.com/burakgormek/atomic-variants/compare/vite-plugin@v0.1.1...vite-plugin@v0.2.0) (2025-12-26)
 
 
