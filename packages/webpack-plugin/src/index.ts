@@ -29,7 +29,8 @@ export default class AtomicVariantsPlugin {
           if (source && typeof source.source === "function") {
             const sourceCode = String(source.source());
 
-            const match = ATOMIC_REGEX.exec(sourceCode);
+            const regex = new RegExp(ATOMIC_REGEX.source, ATOMIC_REGEX.flags);
+            const match = regex.exec(sourceCode);
             if (match) {
               this.extractedClasses.add((match?.[1] || "").trim());
             }
@@ -37,20 +38,20 @@ export default class AtomicVariantsPlugin {
         }
 
         callback();
-      }
+      },
     );
 
     compiler.hooks.done.tap("AtomicVariantsPlugin", (stats) => {
       if (this.extractedClasses.size > 0) {
         this.log(
           "\n🎨 TOTAL Found atomic classes:",
-          Array.from(this.extractedClasses)
+          Array.from(this.extractedClasses),
         );
 
         if (this.filePath) {
           fs.writeFileSync(
             this.filePath,
-            `@source inline("${Array.from(this.extractedClasses).join(" ")}");`
+            `@source inline("${Array.from(this.extractedClasses).join(" ")}");`,
           );
         }
       } else {
