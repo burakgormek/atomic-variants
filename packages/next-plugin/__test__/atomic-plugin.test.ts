@@ -14,7 +14,7 @@ describe("withAtomicVariants", () => {
     config.webpack(mockWebpackConfig, mockOptions);
 
     const pluginInstance = mockWebpackConfig.plugins?.find(
-      (plugin) => plugin instanceof AtomicVariantsPlugin
+      (plugin) => plugin instanceof AtomicVariantsPlugin,
     );
 
     expect(pluginInstance).toBeInstanceOf(AtomicVariantsPlugin);
@@ -25,7 +25,7 @@ describe("withAtomicVariants", () => {
 
     expect(config.experimental?.swcPlugins).toContainEqual([
       "@atomic-variants/swc-plugin",
-      { tag: ATOMIC_TAG },
+      { tag: ATOMIC_TAG, breakpoints: ["sm", "md", "lg", "xl", "2xl"] },
     ]);
   });
 
@@ -38,7 +38,10 @@ describe("withAtomicVariants", () => {
 
     expect(config.experimental?.swcPlugins).toEqual([
       ["existing-plugin", { option: true }],
-      ["@atomic-variants/swc-plugin", { tag: ATOMIC_TAG }],
+      [
+        "@atomic-variants/swc-plugin",
+        { tag: ATOMIC_TAG, breakpoints: ["sm", "md", "lg", "xl", "2xl"] },
+      ],
     ]);
   });
 
@@ -53,7 +56,7 @@ describe("withAtomicVariants", () => {
 
     expect(mockUserWebpack).toHaveBeenCalledWith(
       mockWebpackConfig,
-      mockOptions
+      mockOptions,
     );
   });
 });
