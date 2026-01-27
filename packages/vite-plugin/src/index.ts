@@ -54,7 +54,8 @@ export default function atomicVariants(
         },
       });
 
-      const match = ATOMIC_REGEX.exec(result.code);
+      const regex = new RegExp(ATOMIC_REGEX.source, ATOMIC_REGEX.flags);
+      const match = regex.exec(result.code);
       if (match) {
         extracted.add((match?.[1] || "").trim());
         writeExtractedClasses(extracted);
